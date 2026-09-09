@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width: 600px;">
+        <div class="card" id="detail-container">
+            <p style="color:var(--text-sub)">Cargando detalle del producto...</p>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const container = document.getElementById('detail-container');
+
+            if (!code) {
+                container.innerHTML = '<p>No se especificó ningún producto. <a href="productos.html" class="btn-blue">Volver al catálogo</a></p>';
+                return;
+            }
+
+            const products = getProducts();
+            const product = products.find(p => p.code === code);
+
+            if (!product) {
+                container.innerHTML = '<p>Producto no encontrado. <a href="productos.html" class="btn-blue">Volver al catálogo</a></p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <img src="assets/img/${product.image || 'placeholder.png'}" 
+                     alt="${product.name}" 
+                     style="width:100%; max-height:300px; object-fit:contain; background:#080808; border-radius:8px; margin-bottom:1rem;"
+                     onerror="this.src='https://via.placeholder.com/400x300/111/39FF14?text=Sin+Imagen'">
+                
+                <h2>${product.name}</h2>
+                
+                <div class="product-meta" style="margin: 0.8rem 0;">
+                    <strong>Código:</strong> ${product.code} | <strong>Categoría:</strong> ${product.category}
+                </div>
+                
+                <div class="product-meta" style="margin-bottom: 1rem;">
+                    <strong>Origen / Fabricante:</strong> ${product.origin || 'No especificado'}
+                </div>
+
+                <div class="product-price" style="font-size:1.6rem; color:var(--accent-green); margin-bottom:1rem; font-weight:bold;">
+                    $${product.price.toLocaleString('es-CL')} CLP
+                </div>
+                
+                <div style="background:#181818; padding:1rem; border-radius:6px; margin-bottom:1.5rem;">
+                    <strong>Descripción:</strong>
+                    <p style="margin-top:0.5rem; line-height:1.5; color:var(--text-sub);">${product.desc}</p>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                    <button onclick="addToCart('${product.code}')" class="btn-green" style="flex:1;">🛒 Agregar al Carrito</button>
+                    <a href="productos.html" class="btn-blue" style="text-align:center;">Volver al Catálogo</a>
+                </div>
+            `;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width: 500px;">
+        <div class="card">
+            <h2>Iniciar Sesión</h2>
+            
+            <div style="background: #1e1e1e; padding: 0.8rem; border-left: 3px solid var(--accent-green); margin: 1rem 0; font-size: 0.85rem;">
+                <strong>Credenciales de prueba:</strong><br>
+                • <strong>Administrador:</strong> admin@levelup.cl | clave: admin<br>
+                • <strong>Cliente Duoc:</strong> estudiante@duoc.cl | clave: 123
+            </div>
+
+            <form id="login-form">
+                <label>Correo Electrónico:</label>
+                <input type="email" id="login-email" required placeholder="admin@levelup.cl">
+
+                <label>Contraseña:</label>
+                <input type="password" id="login-pass" required placeholder="admin">
+
+                <button type="submit" class="btn-blue" style="margin-top: 1.5rem; width: 100%;">Ingresar</button>
+            </form>
+            
+            <p style="margin-top: 1rem; text-align: center; font-size: 0.9rem;">
+                ¿No tienes cuenta? <a href="registroUsuario.html" style="color: var(--accent-green);">Regístrate aquí</a>
+            </p>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            const user = getUserByEmail(email);
+
+            if (user && user.password === pass) {
+                setCurrentUser(user);
+                alert(`¡Bienvenido ${user.name}!`);
+                
+                // Redirección según el rol de usuario
+                if (user.role === 'admin') {
+                    window.location.href = 'adminHome.html';
+                } else {
+                    window.location.href = 'home.html';
+                }
+            } else {
+                alert("Correo o contraseña incorrectos.");
+            }
+        });
+    </script>
+</body>
+
+</html>

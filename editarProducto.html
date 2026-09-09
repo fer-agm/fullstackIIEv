@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Producto | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width:600px;">
+        <div class="card">
+            <h2>Editar Producto</h2>
+            <form id="edit-prod-form">
+                <label>Código (No editable):</label>
+                <input type="text" id="p-code" readonly style="opacity:0.6;">
+
+                <label>Categoría:</label>
+                <select id="p-category" required>
+                    <option value="Juegos de Mesa">Juegos de Mesa</option>
+                    <option value="Accesorios">Accesorios</option>
+                    <option value="Consolas">Consolas</option>
+                    <option value="Computadores Gamers">Computadores Gamers</option>
+                    <option value="Sillas Gamers">Sillas Gamers</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Mousepad">Mousepad</option>
+                    <option value="Poleras Personalizadas">Poleras Personalizadas</option>
+                </select>
+
+                <label>Nombre:</label>
+                <input type="text" id="p-name" required>
+
+                <label>Precio (CLP):</label>
+                <input type="number" id="p-price" required>
+
+                <label>Origen / Fabricante:</label>
+                <input type="text" id="p-origin" required>
+
+                <label>Descripción:</label>
+                <textarea id="p-desc" rows="3" required></textarea>
+
+                <label>Nombre de la Imagen (assets/img/):</label>
+                <input type="text" id="p-image" placeholder="Ejemplo: ps5.png">
+
+                <button type="submit" class="btn-blue" style="margin-top:1.5rem; width:100%;">Actualizar Producto</button>
+            </form>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        const code = new URLSearchParams(window.location.search).get('code');
+        const prod = getProductByCode(code);
+
+        if (prod) {
+            document.getElementById('p-code').value = prod.code;
+            document.getElementById('p-category').value = prod.category;
+            document.getElementById('p-name').value = prod.name;
+            document.getElementById('p-price').value = prod.price;
+            document.getElementById('p-origin').value = prod.origin;
+            document.getElementById('p-desc').value = prod.desc;
+        }
+
+        document.getElementById('edit-prod-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const updated = {
+                code: document.getElementById('p-code').value,
+                category: document.getElementById('p-category').value,
+                name: document.getElementById('p-name').value,
+                price: parseInt(document.getElementById('p-price').value),
+                origin: document.getElementById('p-origin').value,
+                desc: document.getElementById('p-desc').value
+            };
+            updateProduct(updated);
+            alert("Producto actualizado correctamente.");
+            window.location.href = 'adminHome.html';
+        });
+    </script>
+</body>
+</html>

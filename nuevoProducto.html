@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Producto | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width:600px;">
+        <div class="card">
+            <h2>Agregar Nuevo Producto</h2>
+            <form id="new-prod-form">
+                <label>Código:</label>
+                <input type="text" id="p-code" required placeholder="Ej: AC003">
+
+                <label>Categoría:</label>
+                <select id="p-category" required>
+                    <option value="Juegos de Mesa">Juegos de Mesa</option>
+                    <option value="Accesorios">Accesorios</option>
+                    <option value="Consolas">Consolas</option>
+                    <option value="Computadores Gamers">Computadores Gamers</option>
+                    <option value="Sillas Gamers">Sillas Gamers</option>
+                    <option value="Mouse">Mouse</option>
+                    <option value="Mousepad">Mousepad</option>
+                    <option value="Poleras Personalizadas">Poleras Personalizadas</option>
+                </select>
+
+                <label>Nombre:</label>
+                <input type="text" id="p-name" required>
+
+                <label>Precio (CLP):</label>
+                <input type="number" id="p-price" required>
+
+                <label>Origen / Fabricante:</label>
+                <input type="text" id="p-origin" required placeholder="Ej: Sony / Japón">
+
+                <label>Descripción:</label>
+                <textarea id="p-desc" rows="3" required></textarea>
+
+                <label>Nombre de la Imagen (Guardada en assets/img/):</label>
+                <input type="text" id="p-image" placeholder="Ejemplo: ps5.png o auricular.jpg">
+
+                <button type="submit" class="btn-green" style="margin-top:1.5rem; width:100%;">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        document.getElementById('new-prod-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const product = {
+                code: document.getElementById('p-code').value,
+                category: document.getElementById('p-category').value,
+                name: document.getElementById('p-name').value,
+                price: parseInt(document.getElementById('p-price').value),
+                origin: document.getElementById('p-origin').value,
+                desc: document.getElementById('p-desc').value,
+                image: document.getElementById('p-image').value.trim() || 'default.png'
+            };
+
+            if(getProductByCode(product.code)){
+                alert("El código de producto ya existe.");
+                return;
+            }
+
+            saveProduct(product);
+            alert("Producto guardado exitosamente. Ahora es visible en la página de productos.");
+            window.location.href = 'adminHome.html';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Productos | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container">
+        <h2>Catálogo Gamer</h2>
+        
+        <div class="card" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <input type="text" id="search-input" placeholder="Buscar por nombre..." style="flex:2;">
+            <select id="category-filter" style="flex:1;">
+                <option value="ALL">Todas las Categorías</option>
+                <option value="Juegos de Mesa">Juegos de Mesa</option>
+                <option value="Accesorios">Accesorios</option>
+                <option value="Consolas">Consolas</option>
+                <option value="Computadores Gamers">Computadores Gamers</option>
+                <option value="Sillas Gamers">Sillas Gamers</option>
+                <option value="Mouse">Mouse</option>
+                <option value="Mousepad">Mousepad</option>
+                <option value="Poleras Personalizadas">Poleras Personalizadas</option>
+                <option value="Polerones Gamers Personalizados">Polerones Gamers Personalizados</option>
+            </select>
+        </div>
+
+        <div class="grid-products" id="catalog-grid"></div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        function renderCatalog() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const cat = document.getElementById('category-filter').value;
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = '';
+
+            const filtered = getProducts().filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(query) || p.desc.toLowerCase().includes(query);
+                const matchesCat = (cat === 'ALL') || (p.category === cat);
+                return matchesSearch && matchesCat;
+            });
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <img src="assets/img/${p.image || 'placeholder.png'}" 
+                             alt="${p.name}" 
+                             onerror="this.src='https://via.placeholder.com/200x180/111/39FF14?text=Sin+Imagen'">
+                        <div>
+                            <h4>${p.name}</h4>
+                            <div class="product-meta">Cod: ${p.code} | Cat: ${p.category}</div>
+                            <div class="product-price">$${p.price.toLocaleString('es-CL')} CLP</div>
+                            <p style="font-size:0.85rem;">${p.desc.substring(0,60)}...</p>
+                        </div>
+                        <div style="margin-top:1rem; display:flex; gap:0.5rem;">
+                            <a href="detalleProducto.html?code=${p.code}" class="btn-blue" style="flex:1; text-align:center;">Detalle</a>
+                            <button onclick="addToCart('${p.code}')" class="btn-green">🛒</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('search-input').addEventListener('input', renderCatalog);
+        document.getElementById('category-filter').addEventListener('change', renderCatalog);
+        renderCatalog();
+    </script>
+</body>
+
+</html>

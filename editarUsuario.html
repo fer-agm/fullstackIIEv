@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuario | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width:500px;">
+        <div class="card">
+            <h2>Editar Usuario</h2>
+            <form id="u-edit-form">
+                <label>Correo (No editable):</label>
+                <input type="email" id="u-email" readonly style="opacity:0.6;">
+
+                <label>Nombre Completo:</label>
+                <input type="text" id="u-name" required>
+
+                <label>Edad:</label>
+                <input type="number" id="u-age" required min="18">
+
+                <label>Rol:</label>
+                <select id="u-role">
+                    <option value="user">Usuario Cliente</option>
+                    <option value="admin">Administrador</option>
+                </select>
+
+                <label>Puntos LevelUp:</label>
+                <input type="number" id="u-points" required min="0">
+
+                <button type="submit" class="btn-blue" style="margin-top:1.5rem; width:100%;">Actualizar Usuario</button>
+            </form>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        const email = new URLSearchParams(window.location.search).get('email');
+        const user = getUserByEmail(email);
+
+        if (user) {
+            document.getElementById('u-email').value = user.email;
+            document.getElementById('u-name').value = user.name;
+            document.getElementById('u-age').value = user.age;
+            document.getElementById('u-role').value = user.role;
+            document.getElementById('u-points').value = user.points;
+        }
+
+        document.getElementById('u-edit-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const updated = {
+                ...user,
+                name: document.getElementById('u-name').value,
+                age: parseInt(document.getElementById('u-age').value),
+                role: document.getElementById('u-role').value,
+                points: parseInt(document.getElementById('u-points').value)
+            };
+            updateUser(updated);
+            alert("Usuario actualizado correctamente.");
+            window.location.href = 'adminHome.html';
+        });
+    </script>
+</body>
+
+</html>

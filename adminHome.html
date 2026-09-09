@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container">
+        <h2>Panel de Administración</h2>
+
+        <!-- Sección de Gestión de Productos -->
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Gestión de Productos</h3>
+                <a href="nuevoProducto.html" class="btn-green">+ Nuevo Producto</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-products-table"></tbody>
+            </table>
+        </div>
+
+        <!-- Sección de Gestión de Usuarios -->
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Gestión de Usuarios</h3>
+                <a href="nuevoUsuario.html" class="btn-blue">+ Nuevo Usuario</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Edad</th>
+                        <th>Rol</th>
+                        <th>Puntos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-users-table"></tbody>
+            </table>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        const currentUser = getCurrentUser();
+        if (!currentUser || currentUser.role !== 'admin') {
+            alert("Acceso restringido para administradores.");
+            window.location.href = 'home.html';
+        }
+
+        function renderAdminTables() {
+            // Tabla Productos
+            const pTable = document.getElementById('admin-products-table');
+            pTable.innerHTML = '';
+            getProducts().forEach(p => {
+                pTable.innerHTML += `
+                    <tr>
+                        <td>${p.code}</td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>$${p.price.toLocaleString('es-CL')}</td>
+                        <td>
+                            <a href="editarProducto.html?code=${p.code}" class="btn-blue" style="font-size:0.8rem;">Editar</a>
+                            <button onclick="deleteProduct('${p.code}'); renderAdminTables();" class="btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            // Tabla Usuarios
+            const uTable = document.getElementById('admin-users-table');
+            uTable.innerHTML = '';
+            getUsers().forEach(u => {
+                uTable.innerHTML += `
+                    <tr>
+                        <td>${u.name}</td>
+                        <td>${u.email}</td>
+                        <td>${u.age}</td>
+                        <td>${u.role}</td>
+                        <td>${u.points}</td>
+                        <td>
+                            <a href="editarUsuario.html?email=${u.email}" class="btn-blue" style="font-size:0.8rem;">Editar</a>
+                            <button onclick="deleteUser('${u.email}'); renderAdminTables();" class="btn-danger">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        renderAdminTables();
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Carrito y Pago | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container">
+        <h2>Tu Carrito de Compras</h2>
+        
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-table-body"></tbody>
+            </table>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid #333; padding-top: 1rem; text-align: right;">
+                <p>Subtotal: <span id="cart-subtotal">$0 CLP</span></p>
+                <p style="color: var(--accent-green)">Descuento Duoc (20%): <span id="cart-discount">-$0 CLP</span></p>
+                <h3>Total Final: <span id="cart-total" style="color: var(--accent-blue)">$0 CLP</span></h3>
+                
+                <button onclick="processCheckout()" class="btn-green" style="margin-top:1rem; font-size:1.1rem;">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="funciones.js"></script>
+    <script>
+        function renderCartTable() {
+            const cart = getCart();
+            const user = getCurrentUser();
+            const tbody = document.getElementById('cart-table-body');
+            tbody.innerHTML = '';
+
+            let subtotal = 0;
+
+            if (cart.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">El carrito está vacío.</td></tr>`;
+            } else {
+                cart.forEach(item => {
+                    const itemSub = item.price * item.qty;
+                    subtotal += itemSub;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${item.name}</strong></td>
+                            <td>$${item.price.toLocaleString('es-CL')}</td>
+                            <td>
+                                <input type="number" min="1" value="${item.qty}" style="width:60px;" onchange="updateCartQty('${item.code}', parseInt(this.value)); renderCartTable();">
+                            </td>
+                            <td>$${itemSub.toLocaleString('es-CL')} CLP</td>
+                            <td><button onclick="removeFromCart('${item.code}'); renderCartTable();" class="btn-danger">X</button></td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const isDuoc = user && user.isDuoc;
+            const discount = isDuoc ? subtotal * 0.20 : 0;
+            const total = subtotal - discount;
+
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toLocaleString('es-CL')} CLP`;
+            document.getElementById('cart-discount').innerText = `-$${discount.toLocaleString('es-CL')} CLP (${isDuoc ? '20%' : '0%'})`;
+            document.getElementById('cart-total').innerText = `$${total.toLocaleString('es-CL')} CLP`;
+        }
+
+        function processCheckout() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                alert("El carrito está vacío.");
+                return;
+            }
+
+            const user = getCurrentUser();
+            if (user) {
+                user.points += 50; 
+                updateUser(user);
+                setCurrentUser(user);
+            }
+
+            alert("¡Compra procesada con éxito! Gracias por tu preferencia. " + (user ? "Has ganado 50 puntos LevelUp." : ""));
+            clearCart();
+            window.location.href = "home.html";
+        }
+
+        renderCartTable();
+    </script>
+</body>
+<footer>    </footer>
+
+</html>

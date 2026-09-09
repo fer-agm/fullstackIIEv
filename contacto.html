@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width:600px;">
+        <div class="card">
+            <h2>Contacto y Soporte Técnico</h2>
+            <form onsubmit="event.preventDefault(); alert('Mensaje enviado. Te responderemos a la brevedad.');">
+                <label>Tu Nombre:</label>
+                <input type="text" required>
+
+                <label>Tu Correo:</label>
+                <input type="email" required>
+
+                <label>Mensaje:</label>
+                <textarea rows="4" required></textarea>
+
+                <button type="submit" class="btn-blue" style="margin-top:1rem; width:100%;">Enviar Consulta</button>
+            </form>
+
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+</body>
+</html>

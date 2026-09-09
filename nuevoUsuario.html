@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Usuario | Level-Up Gamer</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header></header>
+
+    <div class="container" style="max-width:500px;">
+        <div class="card">
+            <h2>Crear Nuevo Usuario</h2>
+            <form id="u-form">
+                <label>Nombre Completo:</label>
+                <input type="text" id="u-name" required>
+
+                <label>Correo Electrónico:</label>
+                <input type="email" id="u-email" required>
+
+                <label>Contraseña:</label>
+                <input type="password" id="u-pass" required>
+
+                <label>Edad:</label>
+                <input type="number" id="u-age" required min="18">
+
+                <label>Rol:</label>
+                <select id="u-role">
+                    <option value="user">Usuario Cliente</option>
+                    <option value="admin">Administrador</option>
+                </select>
+
+                <button type="submit" class="btn-green" style="margin-top:1.5rem; width:100%;">Guardar Usuario</button>
+            </form>
+        </div>
+    </div>
+    <footer>    </footer>
+    
+    <script src="funciones.js"></script>
+    <script>
+        document.getElementById('u-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('u-email').value;
+            const age = parseInt(document.getElementById('u-age').value);
+
+            if(age < 18){
+                alert("El usuario debe tener al menos 18 años.");
+                return;
+            }
+
+            const isDuoc = email.toLowerCase().includes('duoc');
+            const user = {
+                name: document.getElementById('u-name').value,
+                email,
+                password: document.getElementById('u-pass').value,
+                age,
+                role: document.getElementById('u-role').value,
+                points: 0,
+                isDuoc
+            };
+
+            saveUser(user);
+            alert("Usuario creado exitosamente.");
+            window.location.href = 'adminHome.html';
+        });
+    </script>
+</body>
+</html>
