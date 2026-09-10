@@ -1,10 +1,3 @@
-# Level-Up Store — Proyecto Fullstack II
-
-* **Repositorio público:** https://github.com/fer-agm/fullstackIIEv
-* **Demo en vivo (Ejecución directa):** https://fer-agm.github.io/fullstackIIEv/home.html
-
----
-
 En este repositorio creamos una tienda online para Level-Up Store como parte del proyecto semestral 
 para la asignatura Fullstack II.
 
